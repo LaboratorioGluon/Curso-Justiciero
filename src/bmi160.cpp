@@ -1,5 +1,6 @@
 #include <esp_log.h>
 #include <driver/gpio.h>
+#include <string.h>
 
 #include "bmi160.h"
 
@@ -10,10 +11,10 @@ constexpr size_t Length = 8;
 void bmi_initSpi(spi_bus_config_t *spiBus, spi_device_handle_t *spiHandle, spi_device_interface_config_t *spiIf, spi_transaction_t *spiTrans)
 {
     //
-    spiBus = {0};
-    spiHandle = {0};
-    spiIf = {0};
-    spiTrans = {0};
+    memset(spiBus, 0, sizeof(spi_bus_config_t));
+    memset(spiHandle, 0, sizeof(spi_device_handle_t));
+    memset(spiIf, 0, sizeof(spi_device_interface_config_t));
+    memset(spiTrans, 0, sizeof(spi_transaction_t));
 
     // Bus config
     spiBus->mosi_io_num = GPIO_NUM_23;
