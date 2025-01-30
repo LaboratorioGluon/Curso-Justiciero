@@ -8,7 +8,7 @@
 extern "C" void app_main();
 
 
-Bmi160 imu;
+Bmi160<Bmi160SpiConfig> imu;
 
 void app_main() {
 
