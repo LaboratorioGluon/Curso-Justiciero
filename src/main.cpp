@@ -1,18 +1,58 @@
 
 //#include "localBmi160.h"
 #include "classBmi160.h"
+#include "servo.h"
 
+#include <esp_log.h>
 #include <freertos/FreeRTOS.h>
 
+#include "motorController.h"
 
 extern "C" void app_main();
 
 
 Bmi160 imu;
+Servo arm;
+
+constexpr gpio_num_t AIN1 = GPIO_NUM_25;
+constexpr gpio_num_t AIN2 = GPIO_NUM_33;
+constexpr gpio_num_t BIN1 = GPIO_NUM_26;
+constexpr gpio_num_t BIN2 = GPIO_NUM_27;
+
+motorController motors(AIN1, AIN2, GPIO_NUM_32, BIN1, BIN2, GPIO_NUM_14);
 
 void app_main() {
 
     vTaskDelay(pdMS_TO_TICKS(1000));
+ 
+    //arm.initHw();
+    motors.init();
+    uint32_t angle = 50;
+
+    for(;;)
+    {
+        motors.setSpeed(1023, 1023);
+        vTaskDelay(pdMS_TO_TICKS(5000));
+        motors.setSpeed(-1023, -1023);
+        vTaskDelay(pdMS_TO_TICKS(5000));
+    }
+
+    return;
+    for(;;)
+    {
+        ESP_LOGE("MAIN", "Setting angle to: %lu", angle);
+        arm.setPos(angle);
+
+        angle++;
+        if (angle > 100)
+        {
+            angle = 50;
+        }
+        vTaskDelay(pdMS_TO_TICKS(100));
+
+    }
+
+    return;
 
     Bmi160SpiConfig config = {
         .spidev = SPI3_HOST,
@@ -24,6 +64,7 @@ void app_main() {
     };
 
     imu.init(config);
+    
 
     bmi160_sensor_data acc, gyr;
 
