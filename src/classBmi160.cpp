@@ -152,7 +152,7 @@ uint8_t Bmi160::configure()
 uint8_t Bmi160::getRawData(bmi160_sensor_data &acc, bmi160_sensor_data &gyr)
 {
     uint8_t ret = bmi160_get_sensor_data(BMI160_ACCEL_SEL | BMI160_GYRO_SEL | BMI160_TIME_SEL, &acc, &gyr, &dev);
-    ESP_LOGE(TAG, "Acc: %6d %6d %6d %6lu\n", acc.x, acc.y, acc.z, acc.sensortime);
+    //ESP_LOGE(TAG, "Acc: %6d %6d %6d %6lu\n", acc.x, acc.y, acc.z, acc.sensortime);
     return ret;
 }
 
