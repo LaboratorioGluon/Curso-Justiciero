@@ -5,6 +5,7 @@ PID::PID(float pKp, float pKi, float pKd, float pInt_saturation ):
 {
     acum_integral = 0;
     first_run = 1;
+    prev_d = 0;
 }
 
 float PID::update(float error, float dt)
@@ -29,7 +30,8 @@ float PID::update(float error, float dt)
         acum_integral = -int_saturation;
     }
 
-    float derivative = (error - prev_error)/dt;
+    float derivative = prev_d*0.5 + ((error - prev_error)/dt)*0.5;
+    prev_d = derivative;
 
     prev_error = error;
 

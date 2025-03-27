@@ -20,6 +20,7 @@ private:
     float kp, ki, kd;
 
     float prev_error;
+    float prev_d;
     float acum_integral;
 
     float int_saturation;

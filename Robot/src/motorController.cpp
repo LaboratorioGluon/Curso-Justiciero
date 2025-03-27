@@ -17,7 +17,7 @@ void motorController::init()
 {
     ledc_timer_config_t ledcTimer;
     ledcTimer.speed_mode = LEDC_LOW_SPEED_MODE;
-    ledcTimer.freq_hz = 500;
+    ledcTimer.freq_hz = 200;
     ledcTimer.duty_resolution = LEDC_TIMER_10_BIT;
     ledcTimer.clk_cfg = LEDC_AUTO_CLK;
     ledcTimer.timer_num = LEDC_TIMER_1;

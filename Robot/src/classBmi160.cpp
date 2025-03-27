@@ -1,6 +1,7 @@
 #include "classBmi160.h"
 
 #include <esp_log.h>
+#include <esp_timer.h>
 
 static char * TAG = "BMI160";
 
@@ -55,7 +56,9 @@ spi_device_handle_t Bmi160::spiHandle = {0};
 Bmi160::Bmi160():
      dev({0}), spiBus({0}), spiIf({0})
 {
-    
+    gyrOffset[0] = 0.0f;
+    gyrOffset[1] = 0.0f;
+    gyrOffset[2] = 0.0f;
 }
 
 uint8_t Bmi160::init(Bmi160SpiConfig spiConfig)
@@ -129,11 +132,11 @@ uint8_t Bmi160::configure()
 
     /* Select the Output data rate, range of Gyroscope sensor */
     dev.gyro_cfg.odr = BMI160_GYRO_ODR_3200HZ;
-    dev.gyro_cfg.range = BMI160_GYRO_RANGE_2000_DPS;
-    dev.gyro_cfg.bw = BMI160_GYRO_BW_NORMAL_MODE;
+    dev.gyro_cfg.range = BMI160_GYRO_RANGE_1000_DPS;
+    dev.gyro_cfg.bw = BMI160_GYRO_BW_OSR2_MODE;
 
     accScale = 16.0f / float(( (1<< 15) - 1 ));
-    gyrScale = 2000.0f / float(( (1<< 15) - 1 ));
+    gyrScale = 1000.0f / float(( (1<< 15) - 1 ));
 
     /* Select the power mode of Gyroscope sensor */
     dev.gyro_cfg.power = BMI160_GYRO_NORMAL_MODE;
@@ -166,11 +169,34 @@ uint8_t Bmi160::getData(Data &acc, Data &gyr)
     acc.z = rawAcc.z*accScale;
     acc.time = rawAcc.sensortime * sensorTimeScale;
 
-    gyr.x = rawGyr.x*gyrScale;
-    gyr.y = rawGyr.y*gyrScale;
-    gyr.z = rawGyr.z*gyrScale;
+    gyr.x = (rawGyr.x-gyrOffset[0])*gyrScale;
+    gyr.y = (rawGyr.y-gyrOffset[1])*gyrScale;
+    gyr.z = (rawGyr.z-gyrOffset[2])*gyrScale;
     gyr.time = rawGyr.sensortime * sensorTimeScale;
 
     return ret;
 }
 
+
+void Bmi160::calibrate(uint32_t ms)
+{
+    float acum[3] = { 0.0f, 0.0f, 0.0f};
+    uint32_t counter = 0;
+    int64_t start = esp_timer_get_time();
+    bmi160_sensor_data acc, gyr;
+    while( (esp_timer_get_time() - start) < ms*1000)
+    {
+        getRawData(acc, gyr);
+        acum[0] += gyr.x;
+        acum[1] += gyr.y;
+        acum[2] += gyr.z;
+        counter++;
+        vTaskDelay(2);
+    }
+
+    gyrOffset[0] = acum[0]/counter;
+    gyrOffset[1] = acum[1]/counter;
+    gyrOffset[2] = acum[2]/counter;
+
+    ESP_LOGE("BMI", "Offets %.2f %.2f %.2f", gyrOffset[0], gyrOffset[1], gyrOffset[2]);
+}

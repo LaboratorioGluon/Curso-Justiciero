@@ -46,6 +46,8 @@ public:
     uint8_t getRawData(bmi160_sensor_data &acc, bmi160_sensor_data &gyr);
     uint8_t getData(Data &acc, Data &gyr);
 
+    void calibrate(uint32_t ms);
+
     static spi_device_handle_t spiHandle;
 
 private:
@@ -54,6 +56,8 @@ private:
     float accScale;
     float gyrScale;
     
+    
+    float gyrOffset[3];
     
     // SPI
     spi_bus_config_t spiBus;
