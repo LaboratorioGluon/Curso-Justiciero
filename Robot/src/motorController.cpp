@@ -1,4 +1,5 @@
 #include "motorController.h"
+#include <string.h>
 
 motorController::motorController(gpio_num_t leftA, gpio_num_t leftB, gpio_num_t leftPwm,
                                  gpio_num_t rightA, gpio_num_t rightB, gpio_num_t rightPwm)
@@ -25,6 +26,7 @@ void motorController::init()
     ESP_ERROR_CHECK(ledc_timer_config(&ledcTimer));
 
     ledc_channel_config_t ledcChannel;
+    memset(&ledcChannel, 0, sizeof(ledcChannel));
     ledcChannel.channel = leftPwmChannel;
     ledcChannel.gpio_num = leftPinPwm;
     ledcChannel.duty = 0;
@@ -33,6 +35,7 @@ void motorController::init()
     ledcChannel.speed_mode = LEDC_LOW_SPEED_MODE;
     ledcChannel.flags.output_invert = 0;
     ledcChannel.hpoint = 0;
+    
     ESP_ERROR_CHECK(ledc_channel_config(&ledcChannel));
 
     ledcChannel.channel = rightPwmChannel;

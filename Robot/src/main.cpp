@@ -27,6 +27,12 @@ Bmi160 imu;
 Servo arm;
 PID pid(200.0, 0.5, 0.01);
 
+
+#define deltaAlphaRange 32.0f
+#define turnRange 300
+float deltaAlpha;
+float turn;
+
 constexpr gpio_num_t AIN1 = GPIO_NUM_25;
 constexpr gpio_num_t AIN2 = GPIO_NUM_33;
 constexpr gpio_num_t BIN1 = GPIO_NUM_26;
@@ -36,8 +42,10 @@ motorController motors(AIN1, AIN2, GPIO_NUM_32, BIN1, BIN2, GPIO_NUM_14);
 
 void doWhenMove(message_move msg)
 {
-    ESP_LOGE("MAIN", "Message Move");
-    ESP_LOGE("MAIN", "X: %d, Y: %d, Buttons: %d", msg.x, msg.y, msg.buttons);
+    //ESP_LOGE("MAIN", "Message Move");
+    //ESP_LOGE("MAIN", "X: %d, Y: %d, Buttons: %d", msg.x, msg.y, msg.buttons);
+    deltaAlpha = (msg.x-2270)/4095.0f;
+    turn = (msg.y-2317)/4095.0f;
 }
 
 void doWhenCal(message_cal msg)
@@ -67,11 +75,6 @@ void app_main() {
 
     esp_now_register_recv_cb(recvcb);
 
-    for(;;)
-    {
-        vTaskDelay(pdMS_TO_TICKS(1000));
-        ESP_LOGE("MAIN", "Estoy vivo");
-    }
     // Peripheral init
     Bmi160SpiConfig config = {
         .spidev = SPI3_HOST,
@@ -101,14 +104,6 @@ void app_main() {
     lastTime = gyr.time;
     alpha = atan2f(acc.y, acc.z)*180.0f/M_PI_2;
 
-    uint32_t speed = 60;
-    for(;;)
-    {
-        motors.setSpeed(speed, speed);
-        speed += 10;
-        ESP_LOGE("BLACAI", "Motores al %ld", speed);
-        vTaskDelay(pdMS_TO_TICKS(1000));
-    }
 
     for(;;)
     {
@@ -126,7 +121,7 @@ void app_main() {
         //ESP_LOGE("MAIN", "Alpha: %.2f %.2f", alpha, atan2f(acc.y, acc.z)*180.0f/M_PI_2);
 
         // Step 2: Calculat.0, 0.0, 0.0);e motors using PID
-        motor = pid.update((-4.0f-alpha), dt);
+        motor = pid.update((-4.0f-alpha-deltaAlpha*deltaAlphaRange), dt);
         
         if (motor > 0)
         {
@@ -137,12 +132,12 @@ void app_main() {
             motor -= 100;
         }
 
-        motor = (motor > 1023)?1023:motor;
-        motor = (motor < -1023)?-1023:motor;
+        motor = (motor >  1023) ?  1023 : motor;
+        motor = (motor < -1023) ? -1023 : motor;
 
         motor = prev_motor*0.1 + motor*0.9;
         prev_motor = motor;
-        motors.setSpeed(motor, motor);
+        motors.setSpeed(motor+turn*turnRange, motor-turn*turnRange);
         //ESP_LOGE("MAIN", "Motor: %ld", motor);
         printf("$%.2f %ld;\n", alpha, motor);
         vTaskDelay(2);
