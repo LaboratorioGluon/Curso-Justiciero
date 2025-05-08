@@ -1,0 +1,93 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "aca1bc6d-f892-436b-956a-209e9d38e434")
+	(paper "A4")
+	(lib_symbols)
+	(wire
+		(pts
+			(xy 111.76 69.85) (xy 124.46 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "dea25ebd-dd99-4a7b-b591-2713b3380bf0")
+	)
+	(label "V_MOTOR"
+		(at 111.76 69.85 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "cc417f87-bee1-4a75-a570-0ac39921b290")
+	)
+	(global_label "V_MOTOR_GRANDE"
+		(shape input)
+		(at 107.95 76.2 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left)
+		)
+		(uuid "bf194f63-2e1f-421d-8f93-853b3e02692a")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 128.1631 76.2 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(hierarchical_label "SALIDA_2"
+		(shape output)
+		(at 127 57.15 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left)
+		)
+		(uuid "65281c80-06e1-4f80-bdd3-1b5a2c3d239a")
+	)
+	(hierarchical_label "ENTRADA_3"
+		(shape input)
+		(at 120.65 54.61 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify right)
+		)
+		(uuid "797990b5-b838-4e00-90c6-3a116aab1731")
+	)
+	(hierarchical_label "SALIDA_1"
+		(shape output)
+		(at 127 54.61 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(thickness 0.254)
+				(bold yes)
+			)
+			(justify left)
+		)
+		(uuid "ec0416ae-05d1-4b4a-b2ea-aea15ece2d01")
+	)
+)

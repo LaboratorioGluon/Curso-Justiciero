@@ -1,0 +1,5 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/libs/Espressif.kicad_sym")(options "")(descr ""))
+  (lib (name "Justiciero")(type "KiCad")(uri "${KIPRJMOD}/libs/Justiciero.kicad_sym")(options "")(descr ""))
+)
