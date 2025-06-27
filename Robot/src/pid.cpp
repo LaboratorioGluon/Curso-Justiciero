@@ -21,6 +21,11 @@ float PID::update(float error, float dt)
     
     acum_integral += (error + prev_error)*0.5f*dt;
 
+    if(error * prev_error < 0)
+    {
+        acum_integral = 0;
+    }
+
     if( acum_integral > int_saturation)
     {
         acum_integral = int_saturation;
@@ -30,7 +35,7 @@ float PID::update(float error, float dt)
         acum_integral = -int_saturation;
     }
 
-    float derivative = prev_d*0.5 + ((error - prev_error)/dt)*0.5;
+    float derivative = prev_d*0.2 + ((error - prev_error)/dt)*0.7;
     prev_d = derivative;
 
     prev_error = error;

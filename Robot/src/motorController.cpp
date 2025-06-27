@@ -90,6 +90,11 @@ void motorController::setSpeed(int32_t leftSpeed, int32_t rightSpeed)
     }
 
     //ledc_set_duty(LEDC_LOW_SPEED_MODE, LEDC_CHANNEL_0, 300+(int)result);
+    leftSpeed = (leftSpeed > 1023) ? 1023 : leftSpeed;
+    leftSpeed = (leftSpeed < -1023) ? -1023 : leftSpeed;
+    rightSpeed = (rightSpeed > 1023) ? 1023 : rightSpeed;
+    rightSpeed = (rightSpeed < -1023) ? -1023 : rightSpeed;
+
     ledc_set_duty(LEDC_LOW_SPEED_MODE, leftPwmChannel, abs(leftSpeed));
     ledc_update_duty(LEDC_LOW_SPEED_MODE, leftPwmChannel);
     ledc_set_duty(LEDC_LOW_SPEED_MODE, rightPwmChannel, abs(rightSpeed));

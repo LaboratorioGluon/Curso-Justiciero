@@ -123,20 +123,20 @@ uint8_t Bmi160::configure()
     }
 
     /* Select the Output data rate, range of accelerometer sensor */
-    dev.accel_cfg.odr = BMI160_ACCEL_ODR_1600HZ;
-    dev.accel_cfg.range = BMI160_ACCEL_RANGE_16G;
+    dev.accel_cfg.odr = BMI160_ACCEL_ODR_800HZ;
+    dev.accel_cfg.range = BMI160_ACCEL_RANGE_4G;
     dev.accel_cfg.bw = BMI160_ACCEL_BW_OSR4_AVG1;
 
     /* Select the power mode of accelerometer sensor */
     dev.accel_cfg.power = BMI160_ACCEL_NORMAL_MODE;
 
     /* Select the Output data rate, range of Gyroscope sensor */
-    dev.gyro_cfg.odr = BMI160_GYRO_ODR_3200HZ;
-    dev.gyro_cfg.range = BMI160_GYRO_RANGE_1000_DPS;
+    dev.gyro_cfg.odr = BMI160_GYRO_ODR_800HZ;
+    dev.gyro_cfg.range = BMI160_GYRO_RANGE_2000_DPS;
     dev.gyro_cfg.bw = BMI160_GYRO_BW_OSR2_MODE;
 
-    accScale = 16.0f / float(( (1<< 15) - 1 ));
-    gyrScale = 1000.0f / float(( (1<< 15) - 1 ));
+    accScale = 4.0f / float(( (1<< 15) - 1 ));
+    gyrScale = 2000.0f / float(( (1<< 15) - 1 ));
 
     /* Select the power mode of Gyroscope sensor */
     dev.gyro_cfg.power = BMI160_GYRO_NORMAL_MODE;

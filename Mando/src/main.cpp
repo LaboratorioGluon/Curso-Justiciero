@@ -58,15 +58,15 @@ void app_main()
         
 
         ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, ADC_CHANNEL_0, &adcValue));
-        move.x = adcValue;
-        ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, ADC_CHANNEL_1, &adcValue));
         move.y = adcValue;
+        ESP_ERROR_CHECK(adc_oneshot_read(adc1_handle, ADC_CHANNEL_1, &adcValue));
+        move.x = adcValue;
         //ESP_LOGE("ADC", "ADC%d Channel[%d] Raw Data: %d", ADC_UNIT_1 + 1, ADC_CHANNEL_0, adcValue);
 
         ESP_LOGE("MANDO", "X: %d Y: %d", move.x, move.y);
         move.buttons = !move.buttons;
         libnow_sendMessage(DST_ROBOT, &move);
-        vTaskDelay(pdMS_TO_TICKS(100));
+        vTaskDelay(pdMS_TO_TICKS(50));
         /*if (move.x%2 )
         {
             cal.d += 0.1f;
