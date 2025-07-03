@@ -2,4 +2,5 @@
   (version 7)
   (lib (name "Espressif")(type "KiCad")(uri "${KIPRJMOD}/libs/kicad-libraries-main/footprints/Espressif.pretty")(options "")(descr ""))
   (lib (name "Justiciero")(type "KiCad")(uri "${KIPRJMOD}/libs/Justiciero.pretty")(options "")(descr ""))
+  (lib (name "GluonLib")(type "KiCad")(uri "/media/labgluon/LaboratorioGluon/LaboratorioGluon/Proyectos/0000.Common/KicadLibs/GluonLib.pretty")(options "")(descr ""))
 )

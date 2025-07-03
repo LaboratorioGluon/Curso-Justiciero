@@ -22,7 +22,7 @@
 				)
 			)
 		)
-		(property "Footprint" "Justiciero:Untitled"
+		(property "Footprint" ""
 			(at 0 0 0)
 			(effects
 				(font

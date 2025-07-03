@@ -14,7 +14,7 @@
 				)
 			)
 		)
-		(property "Value" ""
+		(property "Value" "5VReg"
 			(at 0 0 0)
 			(effects
 				(font
@@ -22,7 +22,7 @@
 				)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Justiciero:Untitled"
 			(at 0 0 0)
 			(effects
 				(font
@@ -31,7 +31,7 @@
 				(hide yes)
 			)
 		)
-		(property "Datasheet" ""
+		(property "Datasheet" "https://s.click.aliexpress.com/e/_oE199kT"
 			(at 0 0 0)
 			(effects
 				(font

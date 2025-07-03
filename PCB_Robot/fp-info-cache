@@ -1,4 +1,4 @@
-26000932552524102
+26019111590070952
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -60535,6 +60535,83 @@ Fuse Fuseholder TR5 Littelfuse/Wickmann No. 460 No560
 0
 2
 2
+GluonLib
+4 mounting pad
+
+
+0
+4
+4
+GluonLib
+ESP32C3-DEV
+
+
+0
+30
+30
+GluonLib
+Everlight_ITR1201SR10AR
+package for Everlight ITR1201SR10AR, light-direction upwards, see https://www.everlight.com/file/ProductFile/ITR1201SR10AR-TR.pdf
+reflective opto couple photo coupler
+0
+4
+4
+GluonLib
+LCD_ConPines
+Through hole angled pin header, 1x04, 2.54mm pitch, 6mm pin length, single row
+Through hole angled pin header THT 1x04 2.54mm single row
+0
+4
+4
+GluonLib
+LogoGluon_12mm
+
+
+0
+0
+0
+GluonLib
+LogoGluon_25mm
+
+
+0
+0
+0
+GluonLib
+LogoGluon_400px
+
+
+0
+0
+0
+GluonLib
+PowerResistor_L49_W14_MountingHoles
+
+
+0
+2
+2
+GluonLib
+SWITCH_SILICON_6x6x5
+
+
+0
+2
+2
+GluonLib
+TCRT5000
+
+
+0
+4
+4
+GluonLib
+g
+
+
+0
+0
+0
 Heatsink
 Heatsink_35x26mm_1xFixation3mm_Fischer-SK486-35
 Heatsink, 35mm x 26mm, 1x Fixation 3mm, Fischer SK486-35
