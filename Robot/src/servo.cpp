@@ -14,7 +14,7 @@ void Servo::initHw()
         .speed_mode       = LEDC_HIGH_SPEED_MODE,
         .duty_resolution  = LEDC_TIMER_10_BIT,
         .timer_num        = LEDC_TIMER_0,
-        .freq_hz          = 50,  // Set output frequency at 4 kHz
+        .freq_hz          = 50,  
         .clk_cfg          = LEDC_AUTO_CLK
     };
     ESP_ERROR_CHECK(ledc_timer_config(&ledc_timer));
@@ -41,6 +41,8 @@ void Servo::calibrate(uint32_t min, uint32_t max)
 
 void Servo::setPos(uint32_t pos)
 {
-    ESP_ERROR_CHECK(ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, pos));
+    uint32_t servo = (1024.0f/20.0f)*(pos/100.0f + 1.0f);
+    printf("Servo: %ld\n", servo);
+    ESP_ERROR_CHECK(ledc_set_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0, servo));
     ESP_ERROR_CHECK(ledc_update_duty(LEDC_HIGH_SPEED_MODE, LEDC_CHANNEL_0));
 }

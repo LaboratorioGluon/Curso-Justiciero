@@ -7,6 +7,7 @@
 #include <string.h>
 #include <esp_adc/adc_oneshot.h>
 #include <esp_adc/adc_cali.h>
+#include <driver/gpio.h>
 
 #include "libnow.h"
 
@@ -17,6 +18,15 @@ extern "C" void app_main();
 
 void app_main() 
 {
+
+    gpio_config_t buttonGpio;
+    buttonGpio.mode = GPIO_MODE_INPUT;
+    buttonGpio.pull_up_en = GPIO_PULLUP_ENABLE;
+    buttonGpio.pull_down_en = GPIO_PULLDOWN_DISABLE;
+    buttonGpio.pin_bit_mask = GPIO_NUM_2;
+    buttonGpio.intr_type = GPIO_INTR_DISABLE;
+
+    gpio_config(&buttonGpio);
 
     /** ADC **/
     adc_oneshot_unit_handle_t adc1_handle;
@@ -31,6 +41,7 @@ void app_main()
     };
     ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, ADC_CHANNEL_0, &config));
     ESP_ERROR_CHECK(adc_oneshot_config_channel(adc1_handle, ADC_CHANNEL_1, &config));
+
 
 
     libnow_init();
@@ -63,8 +74,9 @@ void app_main()
         move.x = adcValue;
         //ESP_LOGE("ADC", "ADC%d Channel[%d] Raw Data: %d", ADC_UNIT_1 + 1, ADC_CHANNEL_0, adcValue);
 
-        ESP_LOGE("MANDO", "X: %d Y: %d", move.x, move.y);
-        move.buttons = !move.buttons;
+        
+        move.buttons = gpio_get_level(GPIO_NUM_2);
+        ESP_LOGE("MANDO", "X: %d Y: %d, But: %d", move.x, move.y, move.buttons);
         libnow_sendMessage(DST_ROBOT, &move);
         vTaskDelay(pdMS_TO_TICKS(50));
         /*if (move.x%2 )

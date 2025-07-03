@@ -30,10 +30,13 @@ Servo arm;
 PID pid(100.0f, 100.0f, 0.3f);
 
 //#define deltaAlphaRange 32.0f
-#define deltaAlphaRange 0.0f
+#define deltaAlphaRange 10.0f
 #define turnRange 300
 float deltaAlpha = 0.0f;
 float turn = 0.0f;
+uint8_t buttonPressedNow = 0;
+uint8_t lastButtonPressed = 0;
+uint8_t isArmDown = 0;
 
 constexpr gpio_num_t AIN1 = GPIO_NUM_25;
 constexpr gpio_num_t AIN2 = GPIO_NUM_33;
@@ -48,6 +51,11 @@ void doWhenMove(message_move msg)
     //ESP_LOGE("MAIN", "X: %d, Y: %d, Buttons: %d", msg.x, msg.y, msg.buttons);
     deltaAlpha = (msg.x-2270)/4095.0f;
     turn = (msg.y-2317)/4095.0f;
+    if( lastButtonPressed == 1 && msg.buttons == 0)
+    {
+        buttonPressedNow = 1;
+    }
+    lastButtonPressed = msg.buttons;
 }
 
 void doWhenCal(message_cal msg)
@@ -89,6 +97,8 @@ void app_main() {
 
     imu.init(config);
     motors.init();
+    arm.initHw();
+    arm.setPos(0);
 
     ESP_LOGE("MAIN", "Calibrating");
     imu.calibrate(3000);
@@ -153,6 +163,21 @@ void app_main() {
         motor = prev_motor*0.1 + motor*0.9;
         prev_motor = motor;
         motors.setSpeed(-motor+turn*turnRange, -motor-turn*turnRange);
+
+        if (buttonPressedNow)
+        {
+            if(isArmDown == 0)
+            {
+                arm.setPos(100);
+                isArmDown = 1;
+            }
+            else
+            {
+                arm.setPos(0);
+                isArmDown = 0;
+            }
+            buttonPressedNow = 0;
+        }
         //ESP_LOGE("MAIN", "Motor: %ld", motor);
         printf("$%.2f, %ld, %.3f, %.3f, %.3f;\n", alpha, motor,p,i,d);
         vTaskDelay(2);
